@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>当前可用iccid</title>
+  <link rel="shortcut icon" href="http://source.chinasnow.net/static/imgs/favicon.ico" />
+  <link rel="bookmark" href="http://source.chinasnow.net/static/imgs/favicon.ico" />
+  <meta charset="utf-8">
+  <style type="text/css">
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  .header {
+    margin: 20px auto;
+  }
+  a {
+    text-decoration: none;
+    color: #969696;
+  }
+  .logo {
+    background: url(./static/imgs/logo.png) center no-repeat;
+    height: 80px;
+    background-size: 84px 80px;
+  }
+  .content {
+    display: table;
+    width: 100%;
+    min-height: 300px;
+  }
+  .content-cell {
+    display: table-cell;
+    vertical-align: middle;
+  }
+  .content-cell>* {
+    width: 80%;
+    min-width: 300px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .footer {
+    padding: 20px 0;
+    text-align: center;
+    border-top: 1px solid #e5e5e5;
+    line-height: 24px;
+  }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <div class="logo"></div>
+  </div>
+  <div class="content">
+    <div class="content-cell">
+      <h1 id="iccid"></h1>
+      <p id="date"></p>
+      <p><b>该ICCID在最新的IOS系统有效</b></p> 
+      <p><b>The ICCID is valid in the latest IOS</b></p>
+   </div>
+  </div>
+  <div class="footer">
+    <p>Copyright © 2012-2021 幻日西姆科技 All Rights Reserved</p>
+    <p><a href="https://beian.miit.gov.cn" >粤ICP备17008388号</a></p>
+  </div>
+<script type="text/javascript" src="http://source.chinasnow.net/static/layui/layui.js?v=2.3.0"></script>
+<script type="text/javascript">
+layui.config({
+   version:'20200523',
+   base:'http://source.chinasnow.net/static/js/'
+}).extend({
+ usapi:'/usapi'
+}).use(['usapi','util','jquery'],function(){
+  layui.usapi.get.call({
+    basePath:'http://usapi.chinasnow.net'
+  },'http://usapi.chinasnow.net/getIccid', {
+    key: 3
+  }, function(res) {
+    var iccid,date;
+    if (res) {
+      iccid = res.iccid;
+      date = layui.util.toDateString(res.startTime, 'yyyy-MM-dd');
+    } else {
+      date = layui.util.toDateString(new Date(), 'yyyy-MM-dd');
+    }
+    layui.$('#iccid').text(iccid || '当前无可用ICCID');
+    layui.$('#date').text('更新日期：'+date);
+  });
+})
+</script>
+</body>
+</html>
